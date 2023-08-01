@@ -1,3 +1,12 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -10,13 +19,14 @@ export ZSH="/Users/cristipirvulescu/.oh-my-zsh"
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="agnoster"
 # ZSH_THEME="ghostwheel-theme"
-ZSH_THEME="powerlevel9k/powerlevel9k"
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[075]%}\ue0a0\ "
-POWERLEVEL9K_MODE="nerdfont-complete"
-POWERLEVEL9K_DISABLE_RPROMPT=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="▶ "
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+# ZSH_THEME="powerlevel9k/powerlevel9k"
+# ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[075]%}\ue0a0\ "
+# POWERLEVEL9K_MODE="nerdfont-complete"
+# POWERLEVEL9K_DISABLE_RPROMPT=true
+# POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="▶ "
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+
 
 export TERM="xterm-256color"
 # Set list of themes to pick from when loading at random
@@ -77,7 +87,7 @@ export TERM="xterm-256color"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man-pages zsh-autosuggestions osx z tmuxinator)
+plugins=(git colored-man-pages zsh-autosuggestions macos z tmuxinator)
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 source $ZSH/oh-my-zsh.sh
@@ -96,6 +106,7 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 
+export EDITOR='nvim'
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -127,9 +138,12 @@ HISTFILE=~/.zsh_history
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-source /usr/local/opt/powerlevel9k/powerlevel9k.zsh-theme
+# source /usr/local/opt/powerlevel9k/powerlevel9k.zsh-theme
 
 setopt completealiases
+
+# thefuck - command autocorrect app
+eval $(thefuck --alias)
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -148,7 +162,7 @@ alias drrs='docker restart'
 alias drra='docker restart $(docker ps -aq)'
 
 # Git Aliases
-alias gpr="git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done"
+alias gpr="git fetch -p && for branch in \$(git branch -vv | grep ': gone]' | awk '{print \$1}'); do git branch -D \$branch; done"
 alias gundo='git reset --soft HEAD~1'
 
 # Tmuxinator Aliases
@@ -158,7 +172,7 @@ alias wpstart="tmuxinator start worthpoint"
 alias wpstop="tmuxinator stop worthpoint && drma"
 
 # Add openvpn to PATH
-export PATH=$(brew --prefix openvpn)/sbin:$PATH
+# export PATH=$(brew --prefix openvpn)/sbin:$PATH
 
 # Add JAVA_HOME path
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_231.jdk/Contents/Home"
@@ -168,7 +182,18 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root line)
 ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red')
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+export GOPATH=$HOME/go
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
+source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+
 export SDKMAN_DIR="/Users/cristipirvulescu/.sdkman"
 [[ -s "/Users/cristipirvulescu/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/cristipirvulescu/.sdkman/bin/sdkman-init.sh"
-export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
